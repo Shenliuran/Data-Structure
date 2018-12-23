@@ -143,6 +143,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="HuffmanTree.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HuffmanTree.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="StringProcess.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
