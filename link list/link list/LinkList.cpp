@@ -1,133 +1,238 @@
 #include "LinkList.h"
+#include<iostream>
+using namespace std;
 
-//判空
-int isEmpty(int n)
+//1、创建链表
+LinkList create(const int n)
 {
-	if (n == 0)
+	LinkList list = nullptr;
+	LinkList p, r;
+	for (int i = 1; i <= n; i++)
+	{
+		p = (LinkList) new LNode;
+		if (list == nullptr)
+		{
+			cout << "请输入第1个元素：" << endl;
+			list = p;
+			cin >> p->date;
+			p->link = nullptr;
+			r = p;
+		}
+		else
+		{
+			cout << "请输入第" << i << "个元素：" << endl;
+			cin >> p->date;
+			p->link = nullptr;
+			r->link = p;
+			r = p;
+			//r = r->link;
+		}
+	}
+	return list;
+}
+//2、链表判空
+int isEmpty(LinkList list)
+{
+	if (list == nullptr)
 		return 1;
 	else
 		return 0;
 }
+//ps：链表元素个数
+int total_num(LinkList list)
+{
+	LinkList p;
+	p = list;
+	int count = 0;
+	while (p)
+	{
+		count++;
+		p = p->link;
+	}
+	return count;
+}
+//3、链表元素输出
+void display(const LinkList list)
+{
+	LinkList p;
+	p = list;
+	if (isEmpty(list))
+		cout << "链表为空！" << endl;
+	else
+	{
+		cout << "表中现在的元素为：" << endl;
+		while (p)
+		{
+			cout << p->date << " ";
+			p = p->link;
+		}
+		cout << endl;
+	}
+	cout << "元素总数为：" << total_num(list) << endl;
+}
+//4、查找元素x的位置
+void search_location(const LinkList list, const ElemType e)
+{
+	LinkList p;
+	p = list;
+	int location = 1;
+	while (p)
+	{
+		if (p->date == e)
+		{
+			cout << "需要查找的元素是第" << location << "个元素" << endl;
+			break;
+		}
+		else
+		{
+			p = p->link;
+			location++;
+		}
+	}
+	if (p == nullptr)
+		cout << "表中没有此元素！" << endl;
+}
+//5、查找第i个元素
+void search_elem(const LinkList list, const int location)
+{
+	LinkList p;
+	p = list;
+	int count = 1;
+	while (p)
+	{
+		if (count == location)
+		{
+			cout << "需要查找的元素是" << p->date << endl;
+			break;
+		}
+		else
+		{
+			p = p->link;
+			count++;
+		}
+	}
+	if (p == nullptr)
+		cout << "表中没有此元素！" << endl;
+}
+//6、在第i个元素之后插入一个元素
+void insert_elem_later(LinkList list, const int location)
+{
+	LinkList p, r, q;
+	p = list;
+	int count = 1;
+	while (p)
+	{
+		if (count == location)
+		{
+			q = (LinkList) new LNode;
+			cout << "请输入需要插入的元素的值:" << endl;
+			cin >> q->date;
+			r = p->link;
+			q->link = r;
+			p->link = q;
+			break;
+		}
+		else
+		{
+			p = p->link;
+			count++;
+		}
+	}
+}
+//7、在第i个元素之前插入一个元素
+LinkList insert_elem_front(LinkList list, const int location)
+{
+	LinkList l, p, q;
+	l = list;
+	q = l->link;
+	int count = 1;
+	if (isEmpty(list))
+	{
+		cin >> list->date;
+	}
+	else
+	{
+		cout << "请输入需要插入的元素：" << endl;
+		p = (LinkList) new LNode;
+		cin >> p->date;
+		p->link = nullptr;
+		if (location == 1)
+		{
+			p->link = list;
+			list = p;
+			return list;
+		}
+		while (q)
+		{
+			if (count == location)
+			{
+				l->link = p;
+				p->link = q;
+				return list;
+			}
+			else
+			{
+				l = l->link;
+				q = q->link;
+				count++;
+			}
+		}
+	}
+}
+//8、删除值为ｘ的第一个元素
+LinkList delete_elem(LinkList list, const ElemType e)
+{
+	LinkList p, r;
+	r = list;
+	p = list->link;
+	if (!isEmpty(list))
+	{
+		if (list->link == nullptr)
+		{
+			if (list->date == e)
+			{
+				free(list);
+				return nullptr;
+			}
+			else
+				cout << "无此元素！" << endl;
+		}
+		else
+		{
+			while (p)
+			{
+				if (p->date == e)
+				{
+					r->link = p->link;
+					free(p);
+					return list;
+				}
+				else
+				{
+					r = r->link;
+					p = p->link;
+				}
 
-//判满
-int isFull(int n)
-{
-	if (MAXSIZE <= n)
-		return 1;
+			}
+		}
+	}
 	else
-		return 0;
+		cout << "链表为空！" << endl;
 }
-//创建线形表并输入
-void create(ElemType A[], const int n)
+//9、销毁链表
+LinkList drop_list(LinkList list)
 {
+	LinkList p;
+	p = list;
+	if (!isEmpty(list))
+	{
+		while (p)
+		{
+			list = p->link;
+			free(p);
+			p = list;
+		}
+	}
 
-	if (n)
-	{
-		if (n <= MAXSIZE)
-		{
-			//ElemType elem;
-			cout << "请依次输入" << n << "个元素：" << endl;
-			for (int i = 0; i < n; i++)
-			{
-				//cin >> elem;
-				cin >> A[i];
-			}
-		}
-		else
-		{
-			cout << "超出数组最大范围，请重新输入!" << endl;
-		}
-	}
-}
-//插入
-int insert(ElemType A[], int &n, int i, ElemType e)
-{
-	if (!isFull(n))
-	{
-		if (i < 1 || i >(n + 1))
-		{
-			cout << "超出线性表范围！" << endl;
-			return 0;
-		}
-		else if (i < n + 1)
-		{
-			for (int j = i - 1; j < n + 1; j++)
-			{
-				A[j + 1] = A[j];
-			}
-			A[i - 1] = e;
-			n++;
-			return 1;
-		}
-		else
-		{
-			A[n] = e;
-			n++;
-			return 1;
-		}
-	}
-	else
-	{
-		cout << "线性表已满，请进行扩充！" << endl;
-		char s;
-		cout << "请选择是否要进行扩充？ " << endl;
-		cin >> s;
-		if (s == 'y')
-			A = enlarge(A, n);
-		return 0;
-	}
-}
-//删除元素
-void delete_(ElemType A[], int &n, int i)
-{
-	if (!isEmpty(n))
-	{
-		if (i < 1 || i > n)
-			cout << "" << endl;
-		else if (i < n)
-		{
-			for (int j = i - 1; j < n; j++)
-			{
-				A[j] = A[j + 1];
-			}
-			n--;
-		}
-		else
-		{
-			n--;
-		}
-	}
-}
-//显示表中数据
-void display(const ElemType A[], const int n)
-{
-	if (!isEmpty(n))
-	{
-		for (int i = 0; i < n; i++)
-		{
-			cout << A[i] << " ";
-		}
-	}
-}
-//查找和定位
-void search_spot(const ElemType A[], const int n, const int i)
-{
-	if (i < 1 || i > n)
-	{
-		cout << "超出查找范围！" << endl;
-	}
-	else
-	{
-		cout << "需要查找的元素是：" << A[i - 1] << endl;
-	}
-}
-//线性表扩展
-ElemType *enlarge(ElemType A[], const int n)
-{
-	ElemType * new_A = (ElemType *)new ElemType[2 * MAXSIZE];
-	for (int i = 0; i < n; i++)
-	{
-		new_A[i] = A[i];
-	}
-	return new_A;
+	return list;
 }

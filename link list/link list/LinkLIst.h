@@ -1,26 +1,29 @@
 #pragma once
-
-#include<iostream>
-using namespace std;
-
-#define MAXSIZE 100
 typedef int ElemType;
-extern int n;
 
-//判空
-int isEmpty(int n);
-//判满
-int isFull(int n);
+typedef struct Node
+{
+	ElemType date;
+	struct Node *link;
+}LNode, *LinkList;
 
-//创建线形表并输入
-void create(ElemType A[], const int n);
-//插入
-int insert(ElemType A[], int &n, int i, ElemType e);
-//删除元素
-void delete_(ElemType A[], int &n, int i);
-//显示表中数据
-void display(const ElemType A[], const int n);
-//查找和定位
-void search_spot(const ElemType A[], const int n, const int i);
-//线形表扩展
-ElemType * enlarge(ElemType A[], const int n);
+//1、创建链表
+LinkList create(const int n);
+//2、链表判空
+int isEmpty(LinkList list);
+//3、链表元素输出
+void display(const LinkList list);
+//4、查找元素x的位置
+void search_location(const LinkList list, const ElemType e);
+//5、查找第i个元素
+void search_elem(const LinkList list, const int location);
+//6、在第i个元素之后插入一个元素
+void insert_elem_later(LinkList list, const int location);
+//7、在第i个元素之前插入一个元素
+LinkList insert_elem_front(LinkList list, const int location);
+//8、删除值为ｘ的第一个元素
+LinkList delete_elem(LinkList list, const ElemType e);
+//9、销毁链表
+LinkList drop_list(LinkList list);
+//ps:链表元素总数
+int total_num(LinkList);
