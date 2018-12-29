@@ -1,45 +1,39 @@
 #include "HuffmanTree.h"
 
-void Process::sorted_wight_vector()
+void Process::generateWightVector()
 {
-	Node alphabet[52];
+	TreeNode alphabet[52];
 
-	for (int i = 0; i < origin_str.size(); i++)
+	for (int i = 0; i < originStr.size(); i++)
 	{
-		if (origin_str[i] >= 'A' && origin_str[i] <= 'Z')
+		if (originStr[i] >= 'A' && originStr[i] <= 'Z')
 		{
-			alphabet[(int)origin_str[i] - 65].self_add_wight();
-			alphabet[(int)origin_str[i] - 65].set_ch(origin_str[i]);
+			alphabet[(int)originStr[i] - 65].setWight();
+			alphabet[(int)originStr[i] - 65].setCh(originStr[i]);
 		}
-		if (origin_str[i] >= 'a' && origin_str[i] <= 'z')
+		if (originStr[i] >= 'a' && originStr[i] <= 'z')
 		{
-			alphabet[(int)origin_str[i] - 97 + 26].self_add_wight();
-			alphabet[(int)origin_str[i] - 97 + 26].set_ch(origin_str[i]);
+			alphabet[(int)originStr[i] - 97 + 26].setWight();
+			alphabet[(int)originStr[i] - 97 + 26].setCh(originStr[i]);
 		}
 	}
 
 	int i = 0;
 	for (int index = 0; index < 52; index++)
 	{
-		if (alphabet[index].get_wight() != 0)
+		if (alphabet[index].getWight() != 0)
 		{
-			wight_vector.push_back(alphabet[index]);
+			wightVector.push_back(alphabet[index]);
 		}
 	}
-	size = wight_vector.size();
-	for (list<Node>::iterator it = wight_vector.begin(); it != wight_vector.end(); it++)
-		it->set_wight_percentage(origin_str);
-	//sort
-	wight_vector.sort();
+	size = wightVector.getSize();
+	wightVector.bubble_sort();
 }
 
-
-void Process::display_wight_vector()
+void Process::displayVector()
 {
-	sorted_wight_vector();
-	for (list<Node>::iterator it = wight_vector.begin(); it != wight_vector.end(); it++)
+	for (int i = 1; i <= wightVector.getSize(); i++)
 	{
-		cout << it->get_ch() << ":" << it->get_wight() << endl;
+		cout << wightVector[i].getCh() << ":" << wightVector[i].getWight() << endl;
 	}
-	cout << get_size() << endl;
 }
