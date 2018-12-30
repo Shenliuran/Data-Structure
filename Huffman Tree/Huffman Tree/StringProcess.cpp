@@ -32,6 +32,7 @@ void Process::generateWightVector()
 
 void Process::displayVector()
 {
+	generateWightVector();
 	for (int i = 1; i <= wightVector.getSize(); i++)
 	{
 		cout << wightVector[i].getCh() << ":" << wightVector[i].getWight() << endl;

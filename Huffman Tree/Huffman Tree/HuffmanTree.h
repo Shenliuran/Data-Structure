@@ -1,5 +1,6 @@
 #pragma once
 #include "mylist.h"
+#include<vector>
 using namespace std;
 
 class TreeNode
@@ -8,18 +9,20 @@ private:
 	char ch;
 	int wight;
 	int code;
-protected:
-	PtrNode<TreeNode> ptrLChild, ptrRChild;
-	PtrNode<TreeNode> ptrParent;
+	int key;
 public:
-	TreeNode() { ch = '\0'; wight = 0; ptrParent = ptrLChild = ptrRChild = nullptr; code = 0; }
+	TreeNode *ptrLChild, *ptrRChild;
+	TreeNode *ptrParent;
+	TreeNode() { ch = '\0'; wight = 0; ptrParent = ptrLChild = ptrRChild = nullptr; code = 0; key = 0; }
 	void setCh(const char constCh) { ch = constCh; }
+	void setKey(const int constKey) { key = constKey; }
 	void setWight(const int constWight) { wight = constWight; }
 	void setWight() { wight++; }
-	void getCode(const int constCode) { code = constCode; }
+	void setCode(const int constCode) { code = constCode; }
 	char getCh() { return ch; }
-	char getWight() { return wight; }
+	int getWight() { return wight; }
 	int getCode() { return code; }
+	int getKey() { return key; }
 	bool operator <(TreeNode comparedNode)
 	{
 		if (wight < comparedNode.getWight())
@@ -34,6 +37,13 @@ public:
 		else
 			return false;
 	}
+	bool operator !=(TreeNode comparedNode)
+	{
+		if (key != comparedNode.getKey())
+			return true;
+		else
+			return false;
+	}
 };
 
 class Process
@@ -43,8 +53,8 @@ private:
 	string originStr;
 protected:
 	void generateWightVector();
-	MyList<TreeNode> wightVector;
 public:
+	MyList<TreeNode> wightVector;
 	Process(const string constStr) { size = 0; originStr = constStr; }
 	Process() {}
 	int getSize() { return size; }
@@ -55,13 +65,15 @@ public:
 class HuffmanTree
 {
 private:
-	Node<TreeNode> root_node;
-	TreeNode tree_node;
+	Node<TreeNode> rootNode;
+	TreeNode treeNode;
 	Process process;
+protected:
+	void displayCode(TreeNode searchNode);
 public:
-	HuffmanTree(Process const_pro);
-	void display_huffman_code();
-	void display_code(const TreeNode search_node);
+	HuffmanTree(Process constPro);
+	MyList<TreeNode> copiedWightVector;
+	void displayHuffmanCode();
 
-	void quick_sort(MyList<TreeNode> targe_list, MyList<TreeNode> it_middle);
+	//void quick_sort(MyList<TreeNode> targe_list, MyList<TreeNode> it_middle);
 };

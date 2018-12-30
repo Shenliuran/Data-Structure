@@ -7,10 +7,7 @@ int main(void)
 	//cin >> str;
 	Process pro1(str);
 	pro1.displayVector();
-	/*pro1.display_wight_vector();
-	HuffmanTree h1(pro1);*/
-	//h1.create_huffman_tree();
-	//pro1.display_wight_vector();
-	//h1.display_huffman_code();
+	HuffmanTree h(pro1);
+	h.displayHuffmanCode();
 	return 0;
 }
