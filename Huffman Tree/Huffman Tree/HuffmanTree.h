@@ -11,8 +11,9 @@ private:
 	int code;
 	int key;
 public:
-	TreeNode *ptrLChild, *ptrRChild;
-	TreeNode *ptrParent;
+	Ptr<TreeNode> ptrLChild;
+	Ptr<TreeNode>ptrRChild;
+	Ptr<TreeNode> ptrParent;
 	TreeNode() { ch = '\0'; wight = 0; ptrParent = ptrLChild = ptrRChild = nullptr; code = 0; key = 0; }
 	void setCh(const char constCh) { ch = constCh; }
 	void setKey(const int constKey) { key = constKey; }
@@ -65,15 +66,12 @@ public:
 class HuffmanTree
 {
 private:
-	Node<TreeNode> rootNode;
-	TreeNode treeNode;
+	Ptr<TreeNode> rootNode;
 	Process process;
 protected:
-	void displayCode(TreeNode searchNode);
+	void displayCode(Ptr<TreeNode> ptrSearchNode);
+	MyList<TreeNode> copiedWightVector;
 public:
 	HuffmanTree(Process constPro);
-	MyList<TreeNode> copiedWightVector;
 	void displayHuffmanCode();
-
-	//void quick_sort(MyList<TreeNode> targe_list, MyList<TreeNode> it_middle);
 };

@@ -1,39 +1,41 @@
 #include "HuffmanTree.h"
 
+
 HuffmanTree::HuffmanTree(Process constPro)
 {
 	process = constPro;
-	PtrInst<TreeNode> ptrLeft, ptrRight;
-	copiedWightVector = process.wightVector.copy(process.wightVector);
-	//哈夫曼树为左子树权值小于右子树权值
-	while (constPro.wightVector.getSize() != 1)
+	Ptr<TreeNode> ptrLChild;
+	Ptr<TreeNode> ptrRChild;
+	while (process.wightVector.getSize() != 1)
 	{
-		ptrLeft = constPro.wightVector.getPtrFirst();
-		constPro.wightVector.pop_front();
-		ptrRight = constPro.wightVector.getPtrFirst();
-		constPro.wightVector.pop_front();
-		PtrInst<TreeNode> NewNode = new Node<TreeNode>;
-		NewNode->elem.ptrLChild = &ptrLeft->elem;
-		NewNode->elem.ptrRChild = &ptrRight->elem;
-		ptrLeft->elem.ptrParent = &NewNode->elem;
-		ptrRight->elem.ptrRChild = &NewNode->elem;
-		ptrLeft->elem.setCode(0);
-		ptrRight->elem.setCode(1);
-		constPro.wightVector.push_back(NewNode->elem);
-		constPro.wightVector.bubble_sort();
+		ptrLChild = process.wightVector.pop_front();
+		if (ptrLChild->elem.getCh() != '\0')
+			copiedWightVector.push_back(ptrLChild);
+		ptrRChild = process.wightVector.pop_front();
+		if (ptrRChild->elem.getCh() != '\0')
+			copiedWightVector.push_back(ptrRChild);
+		Ptr<TreeNode> ptrNew = new ListNode<TreeNode>;
+		ptrNew->elem.ptrLChild = ptrLChild;
+		ptrNew->elem.ptrRChild = ptrRChild;
+		ptrNew->elem.setWight(ptrLChild->elem.getCode() + ptrRChild->elem.getCode());
+		ptrLChild->elem.ptrParent = ptrNew;
+		ptrRChild->elem.ptrParent = ptrNew;
+		ptrLChild->elem.setCode(0);
+		ptrRChild->elem.setCode(1);
+		process.wightVector.push_back(ptrNew);
 	}
-	rootNode = *constPro.wightVector.getPtrFirst();
+	rootNode = process.wightVector.pop_front();
 }
 
-void HuffmanTree::displayCode(TreeNode searchNode)
+void HuffmanTree::displayCode(Ptr<TreeNode> ptrSearchNode)
 {
 	MyList<int> huffmanCode;
-	Node<TreeNode> flagNode;
-	flagNode.elem = searchNode;
+	Ptr<TreeNode> flagNode;
+	flagNode = ptrSearchNode;
 	while (flagNode != rootNode)
 	{
-		huffmanCode.push_front(flagNode.elem.getCode());
-		flagNode.elem = *searchNode.ptrParent;
+		huffmanCode.push_back(flagNode->elem.getCode());
+		flagNode = flagNode->elem.ptrParent;
 	}
 	huffmanCode.print_whole_list(REVERSE);
 }
@@ -42,8 +44,8 @@ void HuffmanTree::displayHuffmanCode()
 {
 	while (copiedWightVector.getSize() != 0)
 	{
-		TreeNode flagNode = copiedWightVector.pop_front();
-		cout << flagNode.getCh() << ":";
+		Ptr<TreeNode> flagNode = copiedWightVector.pop_front();
+		cout << flagNode->elem.getCh() << ":";
 		displayCode(flagNode);
 		cout << endl;
 	}
